@@ -1,0 +1,48 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    username: ilpillservice@gmail.com
+    password: Pillservice18
+    port: 587
+    properties:
+      mail:
+        debug: false
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: r00t
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        id:
+          new_generator_mappings: true
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  flyway:
+    enabled: false
+  liquibase:
+   enabled: true
+   change-log: classpath:changelog/changelog-master.xml
+
+ps:
+  core:
+    registrationConformationUrl: http://localhost:8080/en/users/registration/confirmation/
+  demo:
+    base-url: http://localhost:9090
+  clalit:
+    base-url: http://localhost:9999

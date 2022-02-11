@@ -1,0 +1,49 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    port: 587
+    properties:
+      mail:
+        debug: false
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  datasource:
+    url: jdbc:postgresql://ps-core-db:5432/${POSTGRES_DB}
+    driverClassName: org.postgresql.Driver
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        id:
+          new_generator_mappings: true
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  flyway:
+    enabled: false
+  liquibase:
+   enabled: true
+   change-log: classpath:changelog/changelog-master.xml
+
+
+
+
+
+
+
+
+

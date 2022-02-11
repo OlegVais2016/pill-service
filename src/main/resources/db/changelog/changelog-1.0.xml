@@ -1,0 +1,273 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+    <changeSet author="AndreyMokhov" id="1">
+        <createTable tableName="PS_USER">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL" type="varchar(50)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="FIRST_NAME" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_NAME" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="PS_USER_CREDENTIAL">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="PASSWORD_HASH" type="Longtext"/>
+            <column name="PASSWORD_SALT" type="Longtext"/>
+        </createTable>
+
+        <createTable tableName="PS_USER_SESSION">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="PS_SESSION_ID" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="IS_VALID" type="boolean"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="PS_USER_CREDENTIAL" baseColumnNames="USER_ID" constraintName="PS_USER_CREDENTIAL_USER_ID_USER_ID"
+                                 referencedTableName="PS_USER" referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="PS_USER_SESSION" baseColumnNames="USER_ID" constraintName="PS_USER_SESSION_USER_ID_USER_ID"
+                                 referencedTableName="PS_USER" referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="2" author="OlegVaiser">
+        <createTable tableName="PS_USER_ACCOUNT">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="DATE_OF_BIRTH" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CITY" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STREET" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HOUSE_NUMBER" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="APARTMENT" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENTRANCE" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PHONE_NUMBER" type="CHAR(10)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="PS_USER_ACCOUNT" baseColumnNames="USER_ID" constraintName="PS_USER_ACCOUNT_USER_ID_USER_ID"
+                                 referencedTableName="PS_USER" referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="3" author="AndreyMokhov">
+        <dropColumn tableName="PS_USER_SESSION" columnName="USER_ID" schemaName="PUBLIC"/>
+        <addColumn tableName="PS_USER_SESSION">
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="4" author="Ovadya Sokolov">
+
+        <createTable tableName="PS_USER_AVATAR">
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="AVATAR" type="bytea">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="PS_USER_AVATAR" baseColumnNames="USER_ID" constraintName="PS_USER_AVATAR_USER_ID"
+                                 referencedTableName="PS_USER" referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <createTable tableName="REGISTRATION_CONFIRMATION">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SEND_STATUS" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONFIRMATION_LINK" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="PS_USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_CONFIRMED" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="REGISTRATION_CONFIRMATION" baseColumnNames="PS_USER_ID" constraintName="REGISTRATION_CONFIRMATION_PS_USER_ID"
+                                 referencedTableName="PS_USER" referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <createTable tableName="PS_USER_ACCOUNT_CONFIGURATION">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PS_USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ACCOUNT_STATUS_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="PS_USER_ACCOUNT_CONFIGURATION" baseColumnNames="PS_USER_ID" constraintName="PS_USER_ACCOUNT_CONFIGURATION_PS_USER_ID"
+                                 referencedTableName="PS_USER" referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+    </changeSet>
+
+    <changeSet id="4" author="edward.kats">
+        <createTable tableName="HC_USER_SESSION">
+            <column name="ID" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="CREATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="UPDATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="SESSION_ID" type="varchar" >
+                <constraints nullable="false" />
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="HC_TYPE_ID" type="int" >
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="HC_USER_SESSION" baseColumnNames="USER_ID"
+                                 constraintName="HC_USER_SESSION_USER_ID_PS_USER_ID"
+                                 referencedTableName="PS_USER"
+                                 referencedColumnNames="ID" />
+    </changeSet>
+
+    <changeSet id="5" author="AndreyMokhov">
+        <dropTable tableName="PS_USER_ACCOUNT"/>
+        <createTable tableName="PS_USER_INFO">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="DATE_OF_BIRTH" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CITY" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STREET" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HOUSE_NUMBER" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="APARTMENT" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENTRANCE" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PHONE_NUMBER" type="CHAR(10)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
