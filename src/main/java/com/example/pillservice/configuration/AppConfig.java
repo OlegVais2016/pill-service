@@ -13,5 +13,4 @@ public class AppConfig {
 
     private String registrationConformationUrl;
 
-
 }
